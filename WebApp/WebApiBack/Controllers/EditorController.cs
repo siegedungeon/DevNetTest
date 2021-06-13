@@ -16,9 +16,9 @@ namespace WebApiBack.Controllers
     {
 
         private readonly ApiDbContext _context;
-        private readonly UserManager<AppUserBack> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public EditorController(ApiDbContext context, UserManager<AppUserBack> userManager)
+        public EditorController(ApiDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -40,7 +40,7 @@ namespace WebApiBack.Controllers
         {
 
             var existItem = await _context.Article.FirstOrDefaultAsync(x => x.ArticleId == id);
-            var Author = await _context.User.FirstOrDefaultAsync(x => x.AuthorId == model.AuthorId);
+            var Author = await _context.Users.FirstOrDefaultAsync(x => x.Id == model.AuthorId);
 
             if (Author == null) { return NotFound("Author doesn't exist"); }
 

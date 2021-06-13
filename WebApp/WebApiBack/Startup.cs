@@ -30,7 +30,7 @@ namespace WebApiBack
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
 
             services.AddDbContext<ApiDbContext>(options =>
-                options.UseSqlite(
+                options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")
                 ));
 
@@ -55,7 +55,8 @@ namespace WebApiBack
             });
 
             services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                        .AddEntityFrameworkStores<ApiDbContext>();
+                        .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<ApiDbContext>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

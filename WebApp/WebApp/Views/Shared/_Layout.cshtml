@@ -19,9 +19,22 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item"><a asp-area="" asp-controller="Blog" asp-action="Index">Home</a></li>
+                    </ul>
+                    <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item"><a asp-area="" asp-controller="Articles" asp-action="Index">Articles</a></li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item"><a asp-area="" asp-controller="Login" asp-action="Index">Login</a></li>
+                    </ul>
+                    @if (Context.User.Claims.Any())
+                    {
+                        <ul class="nav-item">
+                            <p>Hello !</p>
+                        </ul>
+                        <ul class="nav-item">
+                            <li class="nav-item"><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
+                        </ul>
+                    }
                 </div>
             </div>
         </nav>

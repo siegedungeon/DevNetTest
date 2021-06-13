@@ -83,9 +83,12 @@ namespace WebApiBack.Controllers
 
                 var jwtToken  =GenerateJwtToken(existingUser);
 
+                var authorId = existingUser.Id;
+
                 return Ok(new RegistrationResponse() {
                     Success = true,
-                    Token = jwtToken
+                    Token = jwtToken,
+                    AuthorId=authorId
                 });
             }
 

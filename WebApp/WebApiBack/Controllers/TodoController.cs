@@ -6,16 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiBack.Data;
 using WebApiBack.Models;
+using WebApiBack.Models.DTOs;
 using WebApiBack.Models.DTOs.Request;
+using WebApiBack.Models.DTOs.Response;
 
 namespace TodoApp.Controllers
 {
     [Route("api/[controller]")] 
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class TodoController : ControllerBase
     {
-        private readonly ApiDbContext _context;
+        private  ApiDbContext _context;
 
         public TodoController(ApiDbContext context)
         {   
@@ -23,12 +25,26 @@ namespace TodoApp.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetItems()
         {
-            var items = await _context.Article
-                                        .Where(a=>a.HasAproval==1)  //All it is aproved
-                                        .ToListAsync();
-            return Ok(items);
+
+            var resul = await (from ar in _context.Article
+                         join usu in _context.Users on ar.AuthorId equals usu.Id 
+                            where ar.HasAproval == 1
+                            select new {
+                                Abstract = ar.Abstract,
+                                ArticleId = ar.ArticleId,
+                                Contents = ar.Contents,
+                                CreatedDate = ar.CreatedDate,
+                                Title = ar.Title,
+                                AuthorId = ar.AuthorId,
+                                Email = usu.Email,
+                                Name = usu.UserName,
+                                HasAproval = ar.HasAproval,
+                            }).ToListAsync();
+
+            return Ok(resul);
         }
 
         [HttpPost]
@@ -36,11 +52,11 @@ namespace TodoApp.Controllers
         {
             if(ModelState.IsValid)
             {
-                var Author = await _context.User.FirstOrDefaultAsync(x => x.AuthorId == data.AuthorId);
+                var Author = await _context.Users.FirstOrDefaultAsync(x => x.Id == data.AuthorId);
 
                 if (Author == null) { return NotFound("Author doesn't exist"); }
 
-                var response=  await _context.Article.AddAsync(new Article() { 
+                await _context.Article.AddAsync(new Article() { 
                     Abstract=data.Abstract,
                     Author= Author,
                     Contents=data.Contents,
@@ -49,7 +65,7 @@ namespace TodoApp.Controllers
                 });
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetItem", new {response.Entity.ArticleId }, data);
+                return Ok();
             }
 
             return new JsonResult("Something went wrong") {StatusCode = 500};
@@ -81,7 +97,7 @@ namespace TodoApp.Controllers
             
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -95,7 +111,7 @@ namespace TodoApp.Controllers
             _context.Article.Remove(existItem);
             await _context.SaveChangesAsync();
 
-            return Ok(existItem);
+            return Ok();
         }
 
     }

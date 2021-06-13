@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<form asp-action="Create">
+<form asp-controller="Articles" asp-action="CreatePost" method="post">
     <div class="form-horizontal">
         <h4>Create new article</h4>
         <hr />
@@ -43,5 +43,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("~/Views/Shared/_ValidationScriptsPartial.cshtml");}
 }

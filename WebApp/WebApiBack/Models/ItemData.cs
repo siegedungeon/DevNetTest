@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
 using WebApiBack.Models.DTOs;
@@ -18,8 +19,10 @@ namespace WebApiBack.Models
         public DateTime CreatedDate { get; set; }
 
         public int HasAproval { get; set; }
-        public AppUserBack UserAprove { get; set; }
-        public virtual AppUserBack Author { get; set; }
-       
+        public virtual IdentityUser UserAprove { get; set; }
+        public virtual IdentityUser Author { get; set; }
+        public string AuthorId { get; set; }
+        public string UserAproveId { get; set; }
+
     }
 }
