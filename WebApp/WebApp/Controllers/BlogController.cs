@@ -1,25 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using WebApp.Models.User;
 
 namespace WebApp.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     public class BlogController : Controller
     {
-        private readonly SignInManager<AppUser> _sm;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-
-        public BlogController( SignInManager<AppUser> sm
-            , UserManager<IdentityUser> userManager
-            , RoleManager<IdentityRole> roleManager)
-        {
-            _sm = sm;
-            _userManager = userManager;
-            _roleManager = roleManager;
-        }
 
 
         // GET: HomeController
@@ -31,7 +19,8 @@ namespace WebApp.Controllers
         [HttpPost("account/logout")]
         public async Task<IActionResult> Logout()
         {
-            await _sm.SignOutAsync();
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, new AuthenticationProperties());
             return Redirect("~/");
         }
     }

@@ -1,7 +1,15 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\WebApp",
+    "\\WebApp\\WebApp",
+    "\\WebApp\\WebApp\\Controllers",
+    "\\WebApp\\WebApp\\Models",
+    "\\WebApp\\WebApp\\Services",
+    "\\WebApp\\WebApp\\Services\\Generics",
+    "\\WebApp\\WebApp\\Views",
+    "\\WebApp\\WebApp\\Views\\Articles"
   ],
-  "SelectedNode": "\\.gitignore",
+  "SelectedNode": "\\WebApp\\WebApp\\Services\\Generics\\HttpRequest.cs",
   "PreviewInSolutionExplorer": false
 }

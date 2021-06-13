@@ -36,9 +36,6 @@ namespace WebApp
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
 
-            services.AddIdentity<AppUser, IdentityRole>()
-               .AddDefaultTokenProviders();
-
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
              .AddCookie(o =>
              {
@@ -59,7 +56,7 @@ namespace WebApp
             services.Configure<UrlApi>(Configuration.GetSection("UrlBack"));
 
             //Article
-            services.AddTransient<IArticle, ArticleModel>();
+            services.AddScoped<IArticle, ArticleService>();
             //Login
             services.AddTransient<ILogin, LoginService>();
         }
@@ -84,6 +81,7 @@ namespace WebApp
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

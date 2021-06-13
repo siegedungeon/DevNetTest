@@ -1,0 +1,37 @@
+﻿@model WebApp.Models.Article
+
+<div class="row article-summary" style="height:300px;">
+    <div class="col-md-4">
+        <profile-picture profile="@Model.AuthorId" size-px="40" />
+        <img src="https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144855718.jpg" style="height:10%;" alt="Alternate Text" />
+        <p class="text-center author-name">
+           Author Name: @(Model.Name)
+        </p>
+        <p class="text-center author-name">
+          Author Email:   @(Model.Email)
+        </p>
+        <p class="text-center">
+          Creation Date: @Model.CreatedDate.ToString("dd MMM yyyy")
+        </p>
+    </div>
+    <div class="col-md-8">
+        <h4>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a asp-action="Details" asp-route-id="@Model.ArticleId">@Model.Title</a>
+            }          
+            <p class="text-center">
+                @Model.ArticleId
+            </p>
+            <p class="text-center">
+                @Model.Title
+            </p>
+            <p class="text-center">
+                @Model.Contents
+            </p>
+        </h4>
+        <blockquote>
+            <p>@Model.Abstract</p>
+        </blockquote>
+    </div>
+</div>

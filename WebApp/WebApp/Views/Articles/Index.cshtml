@@ -1,5 +1,4 @@
-﻿@model IEnumerable<WebApp.Models.Article>
-@using Microsoft.AspNetCore.Identity;
+﻿@model List<WebApp.Models.Article>
 
 @{
     ViewData["Title"] = "Articles";
@@ -9,28 +8,27 @@
 
 <div class="container">
     <ul class="col-md-8 list-unstyled article-list">
-        @foreach (var article in Model)
+        
+        @foreach (var item in Model)
         {
             <li>
-                <partial name="_ArticleSummary" model="article" />
+                <partial name="~/Views/Articles/articlesSummary.cshtml" model="item" />
             </li>
         }
+        
     </ul>
 
-
-    @if (User.IsInRole("writer"))
+    @if (User.Identity.IsAuthenticated)
     {
         <div class="col-md-4">
             <div class="container-fluid sidebar">
                 <div class="row">
-                    <a asp-action="Create" class="btn btn-primary">
+                    <a asp-controller="Articles" asp-action="Create" class="btn btn-primary">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Write a new Article
                     </a>
-                </div>
-                <div class="row">
-                    @await Component.InvokeAsync("LatestArticles", new { howMany = 3 })
                 </div>
             </div>
         </div>
     }
+
 </div>

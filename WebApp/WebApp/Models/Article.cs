@@ -16,6 +16,8 @@ namespace WebApp.Models
         public DateTime CreatedDate { get; set; }
 
         public string AuthorId { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
         public virtual AppUser Author { get; set; }
     }
 }
